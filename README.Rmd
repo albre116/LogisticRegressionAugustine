@@ -5,12 +5,62 @@ date: "November 22, 2015"
 output: html_document
 ---
 
-Below is the analysis source code and data supporting the publication XX.  This is a R-markdown document, so it can be run directly in the R-Console to reproduce the results
+Below is the analysis source code and data supporting the publication **Forced-air warming linked to periprosthetic total joint replacement infections**.  This is a R-markdown document, so it can be run directly in the R-Console to reproduce the results.
 
 ####Raw Data
 
-The hospital data is 
+The raw infection data by hospital is: 
 
 ```{r}
-summary(cars)
+data <- data.frame(Hospital = c("Center1","Center1","Center2","Center2","Center3","Center3","Combined","Combined","PublicationRef","PublicationRef"),Device = c("CFW","FAW","CFW","FAW","CFW","FAW","CFW","FAW","CFW","FAW"),Infections = c(2,6,0,4,2,6,4,16,10,22),NonInfections = c(675,382,218,171,192,376,1085,929,1087,655))
+
+summary(data)
 ```
+
+
+The fitted models for each center and the pooled results are done using a Haldane correction, which corresponds to adding 1/2 a count to all cells prior to model fitting.  One can argue the proper correction method for sparse data, but the haldane add 1/2 psuedo count prior is one of the most common and, therefore, will be applied here to each center.  The reason we are applying a corrrection method across all of these center specific analyses and the pooled result, is that they have counts below 5 in one of the contingency table cells and as such are considered to be "sparse".  This is a conservative estimation method that will understate the odds and significance versus methods that assume no prior and use the exact counts.
+
+```{r}
+dataHaldane <- data
+dataHaldane[,c("Infections","NonInfections")] <- dataHaldane[,c("Infections","NonInfections")] + 0.5
+
+###group the counts
+counts <- cbind(dataHaldane$Infections,dataHaldane$NonInfections)
+hospitals <- c("Center1","Center2","Center3","Combined","PublicationRef")
+i=1
+models <- list()
+null <- list()
+result <- data.frame()
+for(i in 1:length(hospitals)){
+  center <- hospitals[i]
+  idx <- dataHaldane$Hospital == center
+  tmpdata <- dataHaldane[idx,]
+  countstmp <- cbind(tmpdata$Infections,tmpdata$NonInfections)
+  models[[i]] <- glm(countstmp~tmpdata$Device,family=binomial)
+  null[[i]] <- glm(countstmp~1,family=binomial)
+  #summary(models[[i]])
+  #summary(null[[i]])
+  Chisq <- anova(models[[i]],null[[i]],test="Chisq")
+  print(Chisq)
+  OR <- coef(models[[i]])[2]
+  Variance <- vcov(models[[i]])[2,2]
+  LCL <- OR + qnorm(0.05/2)*sqrt(Variance)
+  UCL <- OR + qnorm(1-0.05/2)*sqrt(Variance)
+  result <- rbind(result,data.frame(Hospital = center,
+                                     Device = names(OR),
+                                     LCL = exp(LCL),
+                                     OR = exp(OR),
+                                     UCL = exp(UCL),
+                                     Pvalue= Chisq[2,5]))
+  
+}
+
+print(result)
+
+
+```
+
+
+
+
+
