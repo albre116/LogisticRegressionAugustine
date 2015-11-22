@@ -1,0 +1,16 @@
+---
+title: "LogisticRegression"
+author: "Mark Albrecht"
+date: "November 22, 2015"
+output: html_document
+---
+
+Below is the analysis source code and data supporting the publication XX.  This is a R-markdown document, so it can be run directly in the R-Console to reproduce the results
+
+####Raw Data
+
+The hospital data is 
+
+```{r}
+summary(cars)
+```
