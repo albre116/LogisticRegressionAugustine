@@ -5,6 +5,22 @@ date: "November 22, 2015"
 output: html_document
 ---
 
+####Email text
+Hi Scott,
+I've updated the statistics in the white paper under **MA_edits.docx**.  The updates include:
+-The statistics in the Table for all centers and the pooled result
+-The statistics in the discussion for the updated McGovern numbers provided as provided in the text
+
+For all of the statistics, I used a conservative model having a Haldane correction for sparse data across all analyses (this should take care of any p-values that you highlighted as possibly being too significant given the data at hand).  This tends to shrink the significance of the p-values and Odds-Ratios, so they are a bit less significant than the last analysis.  However, the results are still highly significant for 2 of the 3 centers and the overall pooled result.  
+
+I think this is the best modeling approach (i.e. a conservative one) for the data you have, especially if you expect these results to be critically questioned down the road.  Also, I put all of this out on a github page so the next statistican can get up and running immediately.  The github page contains all of the statistical source code, so all you have to do is pass them this link XX and they can pickup where I left off.  Since you are trying to publish this data, I'm assuming you don't care if someone can get at the source code (its public right now).  I can take it down the public github page if you want, but I'm anticipating what your needs are likely to be and this would make sense to me as it relates to getting someone else going to support your research.
+
+I hope this helps you along with your efforts
+best
+mark
+
+
+####Analysis Starts Here
 Below is the analysis source code and data supporting the publication **Forced-air warming linked to periprosthetic total joint replacement infections**.  This is a R-markdown document, so it can be run directly in the R-Console to reproduce the results.
 
 ####Raw Data
