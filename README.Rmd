@@ -14,7 +14,7 @@ Below is the analysis source code and data supporting the publication **Forced-a
 The raw infection data by hospital is: 
 
 ```{r}
-data <- data.frame(Hospital = c("Center1v2","Center1v2","Center2","Center2","Combined","Combined"),Device = c("FAW_2","FAW1","CFW","FAW","CFW","FAW"),Infections = c(21,11,10,21,3,32),NonInfections = c(656,378,1087,656,368,1034))
+data <- data.frame(Hospital = c("Center1v2","Center1v2","Center2","Center2","Combined","Combined"),Device = c("FAW1","FAW2","CFW","FAW","CFW","FAW"),Infections = c(11,21,10,21,3,32),NonInfections = c(378,656,1087,656,368,1034))
 
 summary(data)
 ```
